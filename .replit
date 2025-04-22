@@ -26,10 +26,6 @@ args = "Movie Recommender Maven Run"
 
 [[workflows.workflow.tasks]]
 task = "workflow.run"
-args = "API Tester"
-
-[[workflows.workflow.tasks]]
-task = "workflow.run"
 args = "Favorites Tester"
 
 [[workflows.workflow]]
@@ -74,20 +70,6 @@ task = "packager.installForAll"
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "mvn clean javafx:run"
-
-[[workflows.workflow]]
-name = "API Tester"
-author = "agent"
-
-[workflows.workflow.metadata]
-agentRequireRestartOnSave = false
-
-[[workflows.workflow.tasks]]
-task = "packager.installForAll"
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "mvn clean compile exec:java -Dexec.mainClass=\"com.movierecommender.ApiTester\""
 
 [[workflows.workflow]]
 name = "Favorites Tester"

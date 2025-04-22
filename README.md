@@ -49,31 +49,83 @@ The search functionality allows you to find specific movies:
 - Implements **MVC pattern** (Model-View-Controller)
 - Asynchronous data loading for smooth user experience
 
-## Running in Fedora
+## Installation and Running the Application
+
+### Prerequisites
+1. Java 11 or later
+2. Maven
+3. JavaFX
+4. OMDb API key
+
+### Quick Start with the Provided Script (Recommended)
+
+1. Make the run script executable:
+   ```bash
+   chmod +x run_movie_recommender.sh
+   ```
+
+2. Set your OMDb API key:
+   ```bash
+   export OMDB_API_KEY=your_api_key_here
+   ```
+
+3. Run the application:
+   ```bash
+   ./run_movie_recommender.sh
+   ```
+
+### Running in Fedora
 
 To run the application in Fedora with VS Code:
 
 1. Install prerequisites:
-   ```
+   ```bash
    sudo dnf install java-11-openjdk java-11-openjdk-devel maven
    ```
 
 2. Install VS Code and Java extensions:
-   ```
+   ```bash
    sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
    sudo sh -c 'echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" > /etc/yum.repos.d/vscode.repo'
    sudo dnf install code
    ```
    
 3. Install JavaFX:
-   ```
+   ```bash
    sudo dnf install java-openjfx
    ```
 
-4. Open the project in VS Code and run:
+4. Set your API key:
+   ```bash
+   export OMDB_API_KEY=your_api_key_here
    ```
+
+5. Run the application using either:
+   ```bash
+   # Using our run script with improved error handling:
+   ./run_movie_recommender.sh
+   
+   # Or with Maven directly:
+   export MAVEN_OPTS="-Xmx1024m"  # Prevents memory errors
    mvn clean javafx:run
    ```
+
+### Troubleshooting
+If you encounter any issues:
+
+1. **Memory Issues (Exit code 137)**: 
+   - This is a sign of insufficient memory. Increase allocation:
+   ```bash
+   export MAVEN_OPTS="-Xmx2048m"
+   mvn clean javafx:run
+   ```
+
+2. **API Key Issues**:
+   - Verify your OMDb API key is correctly set in your environment
+
+3. **"Cannot invoke 'loadingIndicator.setVisible(boolean)' because 'loadingIndicator' is null"**:
+   - This has been fixed in the latest version
+   - Make sure to run `mvn clean compile` to rebuild the latest code
 
 ## API Information
 

@@ -3,86 +3,97 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.StackPane?>
 
 <BorderPane stylesheets="@../css/netflix-style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.movierecommender.controller.MovieDetailsController">
    <center>
-      <ScrollPane fitToWidth="true" BorderPane.alignment="CENTER">
-         <content>
-            <VBox styleClass="movie-details-container">
-               <children>
-                  <HBox spacing="20.0">
+      <StackPane>
+         <children>
+            <!-- Loading Indicator -->
+            <ProgressIndicator fx:id="loadingIndicator" maxHeight="80.0" maxWidth="80.0" />
+            
+            <!-- Error Label -->
+            <Label fx:id="errorLabel" styleClass="error-message" text="Error message..." visible="false" wrapText="true" />
+            
+            <!-- Details Container -->
+            <ScrollPane fx:id="detailsContainer" fitToWidth="true" visible="false" BorderPane.alignment="CENTER">
+               <content>
+                  <VBox styleClass="movie-details-container">
                      <children>
-                        <ImageView fx:id="posterImageView" fitHeight="300.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
-                        <VBox spacing="10.0" HBox.hgrow="ALWAYS">
+                        <HBox spacing="20.0">
                            <children>
-                              <Label fx:id="titleLabel" styleClass="movie-title" text="Movie Title" />
-                              <Label fx:id="yearLabel" styleClass="movie-subtitle" text="Year" />
-                              <HBox spacing="10.0">
+                              <ImageView fx:id="posterImageView" fitHeight="300.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+                              <VBox spacing="10.0" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <Label fx:id="runtimeLabel" styleClass="movie-subtitle" text="Runtime" />
-                                    <Label fx:id="ratedLabel" styleClass="movie-subtitle" text="Rated" />
-                                    <Label fx:id="genreLabel" styleClass="movie-subtitle" text="Genre" />
+                                    <Label fx:id="titleLabel" styleClass="movie-title" text="Movie Title" />
+                                    <Label fx:id="yearLabel" styleClass="movie-subtitle" text="Year" />
+                                    <HBox spacing="10.0">
+                                       <children>
+                                          <Label fx:id="runtimeLabel" styleClass="movie-subtitle" text="Runtime" />
+                                          <Label fx:id="ratingLabel" styleClass="movie-subtitle" text="Rating" />
+                                          <Label fx:id="genreLabel" styleClass="movie-subtitle" text="Genre" />
+                                       </children>
+                                    </HBox>
+                                    <VBox fx:id="ratingsContainer" styleClass="rating-container" />
+                                    <GridPane hgap="10.0" vgap="5.0">
+                                      <columnConstraints>
+                                        <ColumnConstraints hgrow="NEVER" minWidth="100.0" />
+                                        <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
+                                      </columnConstraints>
+                                      <children>
+                                          <Label styleClass="movie-info-label" text="Director:" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+                                          <Label fx:id="directorLabel" styleClass="movie-info-value" text="Director Name" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+                                          
+                                          <Label styleClass="movie-info-label" text="Actors:" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+                                          <Label fx:id="actorsLabel" styleClass="movie-info-value" text="Actor Names" GridPane.rowIndex="1" GridPane.columnIndex="1" />
+                                      </children>
+                                    </GridPane>
+                                    
+                                    <HBox spacing="10.0" alignment="CENTER_LEFT">
+                                      <children>
+                                          <Button fx:id="likeButton" mnemonicParsing="false" styleClass="netflix-button" text="Add to Favorites" />
+                                          <Button fx:id="trailerButton" mnemonicParsing="false" styleClass="netflix-button" text="Watch Trailer" />
+                                      </children>
+                                      <VBox.margin>
+                                          <Insets top="15.0" />
+                                      </VBox.margin>
+                                    </HBox>
                                  </children>
-                              </HBox>
-                              <VBox fx:id="ratingsContainer" styleClass="rating-container" />
-                              <GridPane hgap="10.0" vgap="5.0">
-                                <columnConstraints>
-                                  <ColumnConstraints hgrow="NEVER" minWidth="100.0" />
-                                  <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
-                                </columnConstraints>
-                                <children>
-                                    <Label styleClass="movie-info-label" text="Director:" GridPane.rowIndex="0" GridPane.columnIndex="0" />
-                                    <Label fx:id="directorLabel" styleClass="movie-info-value" text="Director Name" GridPane.rowIndex="0" GridPane.columnIndex="1" />
-                                    
-                                    <Label styleClass="movie-info-label" text="Writer:" GridPane.rowIndex="1" GridPane.columnIndex="0" />
-                                    <Label fx:id="writerLabel" styleClass="movie-info-value" text="Writer Name" GridPane.rowIndex="1" GridPane.columnIndex="1" />
-                                    
-                                    <Label styleClass="movie-info-label" text="Actors:" GridPane.rowIndex="2" GridPane.columnIndex="0" />
-                                    <Label fx:id="actorsLabel" styleClass="movie-info-value" text="Actor Names" GridPane.rowIndex="2" GridPane.columnIndex="1" />
-                                </children>
-                              </GridPane>
-                              
-                              <HBox spacing="10.0" alignment="CENTER_LEFT">
-                                <children>
-                                    <Button fx:id="likeButton" mnemonicParsing="false" styleClass="netflix-button" text="Add to Favorites" />
-                                    <Button fx:id="trailerButton" mnemonicParsing="false" styleClass="netflix-button" text="Watch Trailer" />
-                                </children>
-                                <VBox.margin>
-                                    <Insets top="15.0" />
-                                </VBox.margin>
-                              </HBox>
+                              </VBox>
+                           </children>
+                        </HBox>
+                        <VBox spacing="10.0">
+                           <VBox.margin>
+                              <Insets top="20.0" />
+                           </VBox.margin>
+                           <children>
+                              <Label styleClass="section-title" text="Plot" />
+                              <TextArea fx:id="plotTextArea" styleClass="movie-plot" text="Movie plot description..." wrapText="true" editable="false" />
+                           </children>
+                        </VBox>
+                        <VBox fx:id="similarMoviesContainer" spacing="10.0">
+                           <VBox.margin>
+                              <Insets top="20.0" />
+                           </VBox.margin>
+                           <children>
+                              <Label styleClass="section-title" text="Similar Movies You Might Like" />
                            </children>
                         </VBox>
                      </children>
-                  </HBox>
-                  <VBox spacing="10.0">
-                     <VBox.margin>
-                        <Insets top="20.0" />
-                     </VBox.margin>
-                     <children>
-                        <Label styleClass="section-title" text="Plot" />
-                        <Label fx:id="plotLabel" styleClass="movie-plot" text="Movie plot description..." wrapText="true" />
-                     </children>
                   </VBox>
-                  <VBox fx:id="similarMoviesContainer" spacing="10.0">
-                     <VBox.margin>
-                        <Insets top="20.0" />
-                     </VBox.margin>
-                     <children>
-                        <Label styleClass="section-title" text="Similar Movies You Might Like" />
-                     </children>
-                  </VBox>
-               </children>
-            </VBox>
-         </content>
-      </ScrollPane>
+               </content>
+            </ScrollPane>
+         </children>
+      </StackPane>
    </center>
    <bottom>
       <HBox alignment="CENTER" spacing="10.0" styleClass="netflix-header">

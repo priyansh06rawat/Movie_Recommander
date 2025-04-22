@@ -71,7 +71,7 @@ public class MovieDetailsController {
     private VBox similarMoviesContainer;
     
     @FXML
-    private VBox detailsContainer;
+    private ScrollPane detailsContainer;
     
     private Movie movie;
     private RecommendationService recommendationService;
@@ -87,10 +87,24 @@ public class MovieDetailsController {
         this.movie = movie;
         this.recommendationService = recommendationService;
         
-        // Show loading state
-        loadingIndicator.setVisible(true);
-        detailsContainer.setVisible(false);
-        errorLabel.setVisible(false);
+        // Check if UI components are properly initialized before using them
+        if (loadingIndicator != null) {
+            loadingIndicator.setVisible(true);
+        } else {
+            System.err.println("Warning: loadingIndicator is null");
+        }
+        
+        if (detailsContainer != null) {
+            detailsContainer.setVisible(false);
+        } else {
+            System.err.println("Warning: detailsContainer is null");
+        }
+        
+        if (errorLabel != null) {
+            errorLabel.setVisible(false);
+        } else {
+            System.err.println("Warning: errorLabel is null");
+        }
         
         // Load full movie details in background
         CompletableFuture.runAsync(() -> {
@@ -103,14 +117,26 @@ public class MovieDetailsController {
                     displaySimilarMovies(similarMovies);
                     
                     // Hide loading indicator
-                    loadingIndicator.setVisible(false);
-                    detailsContainer.setVisible(true);
+                    if (loadingIndicator != null) {
+                        loadingIndicator.setVisible(false);
+                    }
+                    if (detailsContainer != null) {
+                        detailsContainer.setVisible(true);
+                    }
                 });
             } catch (Exception e) {
                 Platform.runLater(() -> {
-                    loadingIndicator.setVisible(false);
-                    errorLabel.setText("Error loading movie details: " + e.getMessage());
-                    errorLabel.setVisible(true);
+                    if (loadingIndicator != null) {
+                        loadingIndicator.setVisible(false);
+                    }
+                    
+                    if (errorLabel != null) {
+                        errorLabel.setText("Error loading movie details: " + e.getMessage());
+                        errorLabel.setVisible(true);
+                    } else {
+                        System.err.println("Error loading movie details: " + e.getMessage());
+                    }
+                    
                     e.printStackTrace();
                 });
             }
@@ -221,8 +247,13 @@ public class MovieDetailsController {
                     displayMovieDetails(fullMovieDetails);
                     displaySimilarMovies(newSimilarMovies);
                 } catch (IOException e) {
-                    errorLabel.setText("Error loading movie details: " + e.getMessage());
-                    errorLabel.setVisible(true);
+                    String errorMsg = "Error loading movie details: " + e.getMessage();
+                    if (errorLabel != null) {
+                        errorLabel.setText(errorMsg);
+                        errorLabel.setVisible(true);
+                    } else {
+                        System.err.println(errorMsg);
+                    }
                     e.printStackTrace();
                 }
             });
@@ -270,9 +301,14 @@ public class MovieDetailsController {
                 alert.showAndWait();
             }
         } catch (Exception e) {
-            errorLabel.setText("Error updating favorites: " + e.getMessage());
-            errorLabel.setVisible(true);
+            String errorMsg = "Error updating favorites: " + e.getMessage();
+            System.err.println(errorMsg);
             e.printStackTrace();
+            
+            if (errorLabel != null) {
+                errorLabel.setText(errorMsg);
+                errorLabel.setVisible(true);
+            }
         }
     }
     
@@ -291,8 +327,12 @@ public class MovieDetailsController {
     private void watchTrailer() {
         try {
             if (movie == null) {
-                errorLabel.setText("Error opening trailer: Movie data is not available");
-                errorLabel.setVisible(true);
+                if (errorLabel != null) {
+                    errorLabel.setText("Error opening trailer: Movie data is not available");
+                    errorLabel.setVisible(true);
+                } else {
+                    System.err.println("Error opening trailer: Movie data is not available");
+                }
                 return;
             }
             
@@ -312,10 +352,14 @@ public class MovieDetailsController {
                 throw new IOException("Desktop browsing not supported on this platform");
             }
         } catch (Exception e) {
-            System.err.println("Error opening trailer: " + e.getMessage());
+            String errorMsg = "Error opening trailer: " + e.getMessage();
+            System.err.println(errorMsg);
             e.printStackTrace();
-            errorLabel.setText("Error opening trailer: " + e.getMessage());
-            errorLabel.setVisible(true);
+            
+            if (errorLabel != null) {
+                errorLabel.setText(errorMsg);
+                errorLabel.setVisible(true);
+            }
         }
     }
 }
