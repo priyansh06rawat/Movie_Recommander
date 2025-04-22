@@ -1,0 +1,8 @@
+/home/runner/workspace/src/main/java/com/movierecommender/model/Movie.java
+/home/runner/workspace/src/main/java/com/movierecommender/service/RecommendationService.java
+/home/runner/workspace/src/main/java/com/movierecommender/controller/MainController.java
+/home/runner/workspace/src/main/java/com/movierecommender/util/UserPreferences.java
+/home/runner/workspace/src/main/java/com/movierecommender/service/OmdbApiService.java
+/home/runner/workspace/src/main/java/com/movierecommender/util/ApiKeyManager.java
+/home/runner/workspace/src/main/java/com/movierecommender/controller/MovieDetailsController.java
+/home/runner/workspace/src/main/java/com/movierecommender/Main.java
