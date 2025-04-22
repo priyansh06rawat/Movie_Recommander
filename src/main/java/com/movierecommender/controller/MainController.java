@@ -128,6 +128,19 @@ public class MainController implements Initializable {
             contentContainer.getChildren().add(heroSection);
         }
         
+        // Add favorites section
+        try {
+            List<Movie> favoriteMovies = recommendationService.getFavoriteMovies();
+            if (!favoriteMovies.isEmpty()) {
+                VBox favoritesSection = createMovieRow("My Favorites ♥", favoriteMovies);
+                // Add a special style class for favorites row
+                favoritesSection.getStyleClass().add("favorites-section");
+                contentContainer.getChildren().add(favoritesSection);
+            }
+        } catch (IOException e) {
+            System.err.println("Error loading favorites: " + e.getMessage());
+        }
+        
         // Add recommended movies row
         if (!recommendedMovies.isEmpty()) {
             VBox recommendedSection = createMovieRow("Recommended for You", recommendedMovies);

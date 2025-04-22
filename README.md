@@ -10,6 +10,8 @@ This is a Netflix-style Java desktop application for movie recommendations using
 - **Detailed Information**: View comprehensive details about each movie
 - **Similar Movies**: For each movie, see related recommendations
 - **User Preferences**: System learns your preferences as you like movies
+- **Favorites Section**: Save and view your favorite movies in a dedicated section
+- **Trailer Integration**: Watch trailers for movies with one click (opens in browser)
 
 ## How it Looks
 
@@ -78,6 +80,21 @@ To run the application in Fedora with VS Code:
 This application uses the OMDb API and requires an API key.
 The key is configured through the environment variable `OMDB_API_KEY`.
 
-## User Preferences
+## User Preferences & Favorites
 
-The application saves your genre preferences to a local file at `~/.movie_recommender_prefs.txt` to provide personalized recommendations.
+The application saves:
+- Your genre preferences to a local file at `~/.movie_recommender_prefs.txt` to provide personalized recommendations.
+- Your favorite movies to a local file at `~/.movie_recommender_favorites.txt` for easy access to movies you like.
+
+### Favorites Feature
+The favorites feature allows you to:
+- Add movies to your favorites collection
+- View all your favorites in a dedicated section on the main screen
+- Remove movies from favorites when desired
+- Your favorites list persists between application restarts
+
+### Trailer Feature
+The trailer feature allows you to:
+- Watch trailers for any movie with a single click
+- Opens YouTube search results for the selected movie trailer in your default browser
+- Combines movie title and year for accurate trailer search results

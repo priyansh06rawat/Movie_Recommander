@@ -6,5 +6,6 @@ com/movierecommender/controller/MainController$1.class
 com/movierecommender/controller/MovieDetailsController.class
 com/movierecommender/controller/MainController.class
 com/movierecommender/util/ApiKeyManager.class
+com/movierecommender/FavoritesApiTester.class
 com/movierecommender/ApiTester.class
 com/movierecommender/util/UserPreferences.class

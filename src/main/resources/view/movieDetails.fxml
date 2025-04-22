@@ -48,6 +48,16 @@
                                     <Label fx:id="actorsLabel" styleClass="movie-info-value" text="Actor Names" GridPane.rowIndex="2" GridPane.columnIndex="1" />
                                 </children>
                               </GridPane>
+                              
+                              <HBox spacing="10.0" alignment="CENTER_LEFT">
+                                <children>
+                                    <Button fx:id="likeButton" mnemonicParsing="false" styleClass="netflix-button" text="Add to Favorites" />
+                                    <Button fx:id="trailerButton" mnemonicParsing="false" styleClass="netflix-button" text="Watch Trailer" />
+                                </children>
+                                <VBox.margin>
+                                    <Insets top="15.0" />
+                                </VBox.margin>
+                              </HBox>
                            </children>
                         </VBox>
                      </children>

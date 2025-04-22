@@ -91,6 +91,7 @@ public class RecommendationService {
     
     /**
      * Add a genre to user's preferences based on a movie they liked
+     * and add the movie to favorites
      * 
      * @param movie the movie the user liked
      * @throws IOException if an I/O error occurs
@@ -105,15 +106,69 @@ public class RecommendationService {
                     userPreferences.addPreferredGenre(genre.trim());
                 }
             }
+            
+            // Add the movie to favorites
+            userPreferences.addFavoriteMovie(fullMovie);
         } else {
             String[] genres = movie.getGenre().split(",");
             for (String genre : genres) {
                 userPreferences.addPreferredGenre(genre.trim());
             }
+            
+            // Add the movie to favorites
+            userPreferences.addFavoriteMovie(movie);
         }
         
         // Save preferences
         userPreferences.savePreferences();
+    }
+    
+    /**
+     * Check if a movie is in the user's favorites
+     * 
+     * @param imdbId the IMDb ID of the movie to check
+     * @return true if the movie is in favorites, false otherwise
+     */
+    public boolean isMovieFavorite(String imdbId) {
+        return userPreferences.isFavoriteMovie(imdbId);
+    }
+    
+    /**
+     * Remove a movie from favorites
+     * 
+     * @param imdbId the IMDb ID of the movie to remove
+     * @throws IOException if an I/O error occurs
+     */
+    public void removeMovieFromFavorites(String imdbId) throws IOException {
+        userPreferences.removeFavoriteMovie(imdbId);
+    }
+    
+    /**
+     * Get list of favorite movies
+     * 
+     * @return list of favorite movies (full details)
+     * @throws IOException if an I/O error occurs
+     */
+    public List<Movie> getFavoriteMovies() throws IOException {
+        List<String> favoriteIds = userPreferences.getFavoriteMovieIds();
+        List<Movie> favorites = new ArrayList<>();
+        
+        for (String imdbId : favoriteIds) {
+            try {
+                Movie movie = omdbApiService.getMovieDetails(imdbId);
+                favorites.add(movie);
+            } catch (IOException e) {
+                System.err.println("Error fetching details for favorite movie " + imdbId + ": " + e.getMessage());
+                // Create a basic movie with just the ID and title from preferences
+                String title = userPreferences.getFavoriteMovies().get(imdbId);
+                if (title != null) {
+                    Movie basicMovie = new Movie(imdbId, title, "", "");
+                    favorites.add(basicMovie);
+                }
+            }
+        }
+        
+        return favorites;
     }
     
     /**

@@ -11,6 +11,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import java.awt.Desktop;
+import java.net.URI;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 import java.io.IOException;
 import java.util.List;
@@ -53,6 +57,9 @@ public class MovieDetailsController {
     
     @FXML
     private Button likeButton;
+    
+    @FXML
+    private Button trailerButton;
     
     @FXML
     private ProgressIndicator loadingIndicator;
@@ -110,10 +117,7 @@ public class MovieDetailsController {
         });
         
         // Set up close button
-        closeButton.setOnAction(event -> {
-            Stage stage = (Stage) closeButton.getScene().getWindow();
-            stage.close();
-        });
+        closeButton.setOnAction(event -> handleClose());
     }
     
     /**
@@ -142,6 +146,18 @@ public class MovieDetailsController {
         
         // Configure like button
         likeButton.setOnAction(event -> likeMovie());
+        
+        // Check if movie is already a favorite and update button
+        if (recommendationService.isMovieFavorite(fullMovie.getImdbId())) {
+            likeButton.setText("Liked ♥");
+            likeButton.getStyleClass().add("netflix-button-liked");
+        } else {
+            likeButton.setText("Add to Favorites");
+            likeButton.getStyleClass().remove("netflix-button-liked");
+        }
+        
+        // Configure trailer button
+        trailerButton.setOnAction(event -> watchTrailer());
     }
     
     /**
@@ -223,20 +239,70 @@ public class MovieDetailsController {
      */
     private void likeMovie() {
         try {
-            recommendationService.addPreferenceFromMovie(movie);
-            
-            // Update button appearance
-            likeButton.setText("Liked ♥");
-            likeButton.setDisable(true);
-            
-            // Show confirmation
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Preferences Updated");
-            alert.setHeaderText(null);
-            alert.setContentText("Your preferences have been updated based on this movie!");
-            alert.showAndWait();
+            // Check if the movie is already liked
+            if (recommendationService.isMovieFavorite(movie.getImdbId())) {
+                // Remove from favorites
+                recommendationService.removeMovieFromFavorites(movie.getImdbId());
+                
+                // Update button appearance
+                likeButton.setText("Add to Favorites");
+                likeButton.getStyleClass().remove("netflix-button-liked");
+                
+                // Show confirmation
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Favorites Updated");
+                alert.setHeaderText(null);
+                alert.setContentText("Movie removed from your favorites!");
+                alert.showAndWait();
+            } else {
+                // Add to favorites
+                recommendationService.addPreferenceFromMovie(movie);
+                
+                // Update button appearance
+                likeButton.setText("Liked ♥");
+                likeButton.getStyleClass().add("netflix-button-liked");
+                
+                // Show confirmation
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Favorites Updated");
+                alert.setHeaderText(null);
+                alert.setContentText("Movie added to your favorites!");
+                alert.showAndWait();
+            }
         } catch (Exception e) {
-            errorLabel.setText("Error updating preferences: " + e.getMessage());
+            errorLabel.setText("Error updating favorites: " + e.getMessage());
+            errorLabel.setVisible(true);
+            e.printStackTrace();
+        }
+    }
+    
+    /**
+     * Handles closing the window
+     */
+    @FXML
+    public void handleClose() {
+        Stage stage = (Stage) closeButton.getScene().getWindow();
+        stage.close();
+    }
+    
+    /**
+     * Opens a web browser to search for the movie trailer on YouTube
+     */
+    private void watchTrailer() {
+        try {
+            // Create a YouTube search URL with the movie title and "trailer"
+            String searchQuery = movie.getTitle() + " " + movie.getYear() + " trailer";
+            String encodedQuery = URLEncoder.encode(searchQuery, StandardCharsets.UTF_8.toString());
+            String youtubeUrl = "https://www.youtube.com/results?search_query=" + encodedQuery;
+            
+            // Open the URL in the default browser
+            if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+                Desktop.getDesktop().browse(new URI(youtubeUrl));
+            } else {
+                throw new IOException("Desktop browsing not supported on this platform");
+            }
+        } catch (Exception e) {
+            errorLabel.setText("Error opening trailer: " + e.getMessage());
             errorLabel.setVisible(true);
             e.printStackTrace();
         }

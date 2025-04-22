@@ -142,6 +142,22 @@
     -fx-background-color: #f40612;
 }
 
+.netflix-button-liked {
+    -fx-background-color: #2e2e2e;
+    -fx-text-fill: #E50914;
+    -fx-font-weight: bold;
+    -fx-padding: 8 15;
+    -fx-background-radius: 2;
+    -fx-cursor: hand;
+    -fx-border-color: #E50914;
+    -fx-border-width: 1;
+    -fx-border-radius: 2;
+}
+
+.netflix-button-liked:hover {
+    -fx-background-color: #3e3e3e;
+}
+
 .netflix-button-secondary {
     -fx-background-color: #4d4d4d;
     -fx-text-fill: white;
@@ -208,4 +224,21 @@
     -fx-text-fill: #E50914;
     -fx-font-weight: bold;
     -fx-font-size: 12px;
+}
+
+/* Favorites Section */
+.favorites-section {
+    -fx-border-color: #E50914;
+    -fx-border-width: 1;
+    -fx-border-radius: 5;
+    -fx-background-color: rgba(229, 9, 20, 0.1);
+    -fx-padding: 10;
+    -fx-margin: 0 0 20 0;
+}
+
+.favorites-section .row-title {
+    -fx-text-fill: #E50914;
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-padding: 0 0 10 10;
 }
