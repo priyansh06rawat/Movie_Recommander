@@ -21,6 +21,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Controller for the main UI screen
@@ -425,7 +427,14 @@ public class MainController implements Initializable {
      * Opens movie details in a new window
      */
     private void showMovieDetails(Movie movie) {
+        if (movie == null) {
+            showError("Error: Cannot show details for null movie");
+            return;
+        }
+        
         try {
+            System.out.println("Opening details for movie: " + movie.getTitle());
+            
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/movieDetails.fxml"));
             Parent root = loader.load();
             
@@ -433,15 +442,22 @@ public class MainController implements Initializable {
             detailsController.initData(movie, recommendationService);
             
             Stage detailsStage = new Stage();
-            detailsStage.setTitle(movie.getTitle());
+            detailsStage.setTitle(movie.getTitle() != null ? movie.getTitle() : "Movie Details");
             Scene scene = new Scene(root, 800, 600);
-            scene.getStylesheets().add(getClass().getResource("/css/netflix-style.css").toExternalForm());
+            
+            URL cssUrl = getClass().getResource("/css/netflix-style.css");
+            if (cssUrl != null) {
+                scene.getStylesheets().add(cssUrl.toExternalForm());
+            } else {
+                System.err.println("Warning: Could not load CSS file");
+            }
             
             detailsStage.setScene(scene);
             detailsStage.initModality(Modality.APPLICATION_MODAL);
             detailsStage.show();
-        } catch (IOException e) {
+        } catch (Exception e) {
             showError("Error showing movie details: " + e.getMessage());
+            System.err.println("Error showing movie details: " + e.getMessage());
             e.printStackTrace();
         }
     }

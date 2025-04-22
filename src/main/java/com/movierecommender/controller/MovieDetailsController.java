@@ -290,10 +290,20 @@ public class MovieDetailsController {
      */
     private void watchTrailer() {
         try {
+            if (movie == null) {
+                errorLabel.setText("Error opening trailer: Movie data is not available");
+                errorLabel.setVisible(true);
+                return;
+            }
+            
             // Create a YouTube search URL with the movie title and "trailer"
-            String searchQuery = movie.getTitle() + " " + movie.getYear() + " trailer";
+            String title = movie.getTitle() != null ? movie.getTitle() : "Unknown movie";
+            String year = movie.getYear() != null ? movie.getYear() : "";
+            String searchQuery = title + " " + year + " trailer";
             String encodedQuery = URLEncoder.encode(searchQuery, StandardCharsets.UTF_8.toString());
             String youtubeUrl = "https://www.youtube.com/results?search_query=" + encodedQuery;
+            
+            System.out.println("Opening trailer URL: " + youtubeUrl);
             
             // Open the URL in the default browser
             if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
@@ -302,9 +312,10 @@ public class MovieDetailsController {
                 throw new IOException("Desktop browsing not supported on this platform");
             }
         } catch (Exception e) {
+            System.err.println("Error opening trailer: " + e.getMessage());
+            e.printStackTrace();
             errorLabel.setText("Error opening trailer: " + e.getMessage());
             errorLabel.setVisible(true);
-            e.printStackTrace();
         }
     }
 }
