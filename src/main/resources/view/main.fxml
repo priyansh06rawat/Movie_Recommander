@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.movierecommender.controller.MainController"
+            stylesheets="/css/netflix-style.css"
+            styleClass="background">
+
+    <!-- Top navigation bar -->
+    <top>
+        <HBox styleClass="top-bar">
+            <padding>
+                <Insets top="10" right="15" bottom="10" left="15"/>
+            </padding>
+            <Label text="MovieFlix" styleClass="app-title"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            
+            <!-- Search field -->
+            <HBox spacing="5" alignment="CENTER_RIGHT">
+                <TextField fx:id="searchField" promptText="Search movies..." prefWidth="250"/>
+                <Button fx:id="searchButton" text="Search" styleClass="netflix-button"/>
+            </HBox>
+        </HBox>
+    </top>
+    
+    <!-- Main content area -->
+    <center>
+        <StackPane>
+            <ScrollPane fx:id="mainScrollPane" styleClass="main-scroll-pane">
+                <VBox fx:id="contentContainer" spacing="20">
+                    <padding>
+                        <Insets top="0" right="0" bottom="30" left="0"/>
+                    </padding>
+                    <!-- Content will be added dynamically -->
+                </VBox>
+            </ScrollPane>
+            
+            <!-- Error message overlay -->
+            <StackPane alignment="TOP_CENTER" mouseTransparent="true">
+                <padding>
+                    <Insets top="20" right="0" bottom="0" left="0"/>
+                </padding>
+                <Label fx:id="errorMessageLabel" styleClass="error-message" visible="false"/>
+            </StackPane>
+        </StackPane>
+    </center>
+    
+    <!-- Footer with copyright info -->
+    <bottom>
+        <HBox styleClass="footer">
+            <padding>
+                <Insets top="10" right="15" bottom="10" left="15"/>
+            </padding>
+            <Label text="Movie data provided by OMDb API" styleClass="footer-text"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Label text="© 2023 MovieFlix Recommender" styleClass="footer-text"/>
+        </HBox>
+    </bottom>
+
+</BorderPane>

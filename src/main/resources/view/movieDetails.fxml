@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.movierecommender.controller.MovieDetailsController"
+            styleClass="details-background"
+            stylesheets="/css/netflix-style.css">
+
+    <!-- Top title bar -->
+    <top>
+        <HBox styleClass="details-title-bar">
+            <padding>
+                <Insets top="15" right="20" bottom="15" left="20"/>
+            </padding>
+            <Label text="Movie Details" styleClass="details-screen-title"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Button fx:id="closeButton" text="✕" styleClass="close-button"/>
+        </HBox>
+    </top>
+    
+    <!-- Main content area -->
+    <center>
+        <StackPane>
+            <!-- Loading indicator -->
+            <ProgressIndicator fx:id="loadingIndicator" progress="-1.0" maxWidth="100" maxHeight="100"/>
+            
+            <!-- Error message -->
+            <Label fx:id="errorLabel" styleClass="error-message" visible="false" wrapText="true" 
+                   maxWidth="500" textAlignment="CENTER"/>
+            
+            <!-- Details content -->
+            <VBox fx:id="detailsContainer" spacing="20" visible="false">
+                <padding>
+                    <Insets top="20" right="30" bottom="30" left="30"/>
+                </padding>
+                
+                <!-- Movie details section -->
+                <HBox spacing="20">
+                    <!-- Movie poster -->
+                    <ImageView fx:id="posterImageView" fitHeight="300" preserveRatio="true" 
+                              styleClass="details-poster"/>
+                    
+                    <!-- Movie info -->
+                    <VBox spacing="10" HBox.hgrow="ALWAYS">
+                        <Label fx:id="titleLabel" styleClass="details-title"/>
+                        
+                        <HBox spacing="10">
+                            <Label fx:id="yearLabel" styleClass="details-year"/>
+                            <Label fx:id="runtimeLabel" styleClass="details-runtime"/>
+                            <Label fx:id="ratingLabel" styleClass="details-rating"/>
+                        </HBox>
+                        
+                        <Label text="Genres:" styleClass="details-section-label"/>
+                        <Label fx:id="genreLabel" styleClass="details-text"/>
+                        
+                        <Label text="Director:" styleClass="details-section-label"/>
+                        <Label fx:id="directorLabel" styleClass="details-text"/>
+                        
+                        <Label text="Cast:" styleClass="details-section-label"/>
+                        <Label fx:id="actorsLabel" styleClass="details-text" wrapText="true"/>
+                        
+                        <Region VBox.vgrow="ALWAYS" minHeight="10"/>
+                        
+                        <Button fx:id="likeButton" text="♥ Like this movie" styleClass="like-button"/>
+                    </VBox>
+                </HBox>
+                
+                <!-- Plot section -->
+                <VBox spacing="10">
+                    <Label text="Plot Summary:" styleClass="details-section-label"/>
+                    <TextArea fx:id="plotTextArea" wrapText="true" editable="false" 
+                             prefHeight="100" styleClass="plot-text-area"/>
+                </VBox>
+                
+                <!-- Similar movies section -->
+                <VBox fx:id="similarMoviesContainer" spacing="10"/>
+            </VBox>
+        </StackPane>
+    </center>
+
+</BorderPane>
