@@ -249,9 +249,21 @@ public class MainController implements Initializable {
         // Movie poster
         ImageView posterView = new ImageView();
         if (movie.getPosterUrl() != null && !movie.getPosterUrl().equals("N/A")) {
-            posterView.setImage(new Image(movie.getPosterUrl()));
+            try {
+                posterView.setImage(new Image(movie.getPosterUrl()));
+            } catch (Exception e) {
+                // If the image URL is invalid, create a placeholder image programmatically
+                System.out.println("Error loading image: " + e.getMessage());
+                // Create a default placeholder colored rectangle
+                posterView.setFitWidth(150);
+                posterView.setFitHeight(225);
+                posterView.setStyle("-fx-background-color: #333333;");
+            }
         } else {
-            posterView.setImage(new Image(getClass().getResource("/placeholder.png").toExternalForm()));
+            // Create a default placeholder colored rectangle instead of loading a resource
+            posterView.setFitWidth(150);
+            posterView.setFitHeight(225);
+            posterView.setStyle("-fx-background-color: #333333;");
         }
         posterView.setFitWidth(150);
         posterView.setFitHeight(225);

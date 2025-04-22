@@ -1,0 +1,57 @@
+└─(21:59:16 on main ✖ ✹)──> mvn clean javafx:run                                                                                                                                          ──(Tue,Apr22)─┘
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ---------------< com.movierecommender:movie-recommender >---------------
+[INFO] Building movie-recommender 1.0-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[WARNING] 6 problems were encountered while building the effective model for org.openjfx:javafx-controls:jar:17.0.2 during dependency collection step for project (use -X to see details)
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ movie-recommender ---
+[INFO] Deleting /home/priyansh/Downloads/MovieMatchMaker(1)/MovieMatchMaker/target
+[INFO] 
+[INFO] >>> javafx:0.0.8:run (default-cli) > process-classes @ movie-recommender >>>
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ movie-recommender ---
+[INFO] Copying 4 resources from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.10.1:compile (default-compile) @ movie-recommender ---
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 9 source files to /home/priyansh/Downloads/MovieMatchMaker(1)/MovieMatchMaker/target/classes
+[INFO] 
+[INFO] <<< javafx:0.0.8:run (default-cli) < process-classes @ movie-recommender <<<
+[INFO] 
+[INFO] 
+[INFO] --- javafx:0.0.8:run (default-cli) @ movie-recommender ---
+java.lang.NullPointerException: Cannot invoke "java.net.URL.toExternalForm()" because the return value of "java.lang.Class.getResource(String)" is null
+        at com.movierecommender.controller.MainController.createMovieCard(MainController.java:254)
+        at com.movierecommender.controller.MainController.createMovieRow(MainController.java:230)
+        at com.movierecommender.controller.MainController.updateUIWithMovies(MainController.java:149)
+        at com.movierecommender.controller.MainController.lambda$loadInitialContent$2(MainController.java:102)
+        at javafx.graphics/com.sun.javafx.application.PlatformImpl.lambda$runLater$10(PlatformImpl.java:457)
+        at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+        at javafx.graphics/com.sun.javafx.application.PlatformImpl.lambda$runLater$11(PlatformImpl.java:456)
+        at javafx.graphics/com.sun.glass.ui.InvokeLaterDispatcher$Future.run(InvokeLaterDispatcher.java:96)
+        at javafx.graphics/com.sun.glass.ui.gtk.GtkApplication._runLoop(Native Method)
+        at javafx.graphics/com.sun.glass.ui.gtk.GtkApplication.lambda$runLoop$11(GtkApplication.java:290)
+        at java.base/java.lang.Thread.run(Thread.java:840)
+java.lang.NullPointerException: Cannot invoke "java.net.URL.toExternalForm()" because the return value of "java.lang.Class.getResource(String)" is null
+        at com.movierecommender.controller.MainController.createMovieCard(MainController.java:254)
+        at com.movierecommender.controller.MainController.createMovieRow(MainController.java:230)
+        at com.movierecommender.controller.MainController.updateUIWithMovies(MainController.java:149)
+        at com.movierecommender.controller.MainController.lambda$loadInitialContent$2(MainController.java:102)
+        at javafx.graphics/com.sun.javafx.application.PlatformImpl.lambda$runLater$10(PlatformImpl.java:457)
+        at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+        at javafx.graphics/com.sun.javafx.application.PlatformImpl.lambda$runLater$11(PlatformImpl.java:456)
+        at javafx.graphics/com.sun.glass.ui.InvokeLaterDispatcher$Future.run(InvokeLaterDispatcher.java:96)
+        at javafx.graphics/com.sun.glass.ui.gtk.GtkApplication._runLoop(Native Method)
+        at javafx.graphics/com.sun.glass.ui.gtk.GtkApplication.lambda$runLoop$11(GtkApplication.java:290)
+        at java.base/java.lang.Thread.run(Thread.java:840)
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  03:30 min
+[INFO] Finished at: 2025-04-22T22:02:53+05:30
+[INFO] ------------------------------------------------------------------------
+┌─(~/Downloads/MovieMatchMaker(1)/MovieMatchMaker)──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────(priyansh@pr:pts/0)─┐
+└─(22:02:56 on main ✹)──>                                                                                                                                                                 ──(Tue,Apr22)─┘
