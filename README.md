@@ -75,7 +75,8 @@ To run the application in Fedora with VS Code:
 
 ## API Information
 
-This application uses the OMDb API with key: `24118512`
+This application uses the OMDb API and requires an API key.
+The key is configured through the environment variable `OMDB_API_KEY`.
 
 ## User Preferences
 

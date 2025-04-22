@@ -26,8 +26,8 @@ public class OmdbApiService {
 
     public OmdbApiService() {
         this.client = new OkHttpClient.Builder()
-                .connectTimeout(10, TimeUnit.SECONDS)
-                .readTimeout(10, TimeUnit.SECONDS)
+                .connectTimeout(30, TimeUnit.SECONDS)
+                .readTimeout(30, TimeUnit.SECONDS)
                 .build();
         this.objectMapper = new ObjectMapper();
         this.apiKey = ApiKeyManager.getApiKey();
@@ -49,34 +49,58 @@ public class OmdbApiService {
                 .url(url)
                 .build();
 
-        try (Response response = client.newCall(request).execute()) {
-            if (!response.isSuccessful()) {
-                throw new IOException("Unexpected response code: " + response);
-            }
+        // Implement retry logic
+        int maxRetries = 3;
+        int retryCount = 0;
+        IOException lastException = null;
 
-            String responseBody = response.body().string();
-            JsonNode rootNode = objectMapper.readTree(responseBody);
-            
-            if (!"True".equals(rootNode.path("Response").asText())) {
-                return new ArrayList<>();
-            }
-            
-            List<Movie> movies = new ArrayList<>();
-            JsonNode resultsNode = rootNode.path("Search");
-            
-            if (resultsNode.isArray()) {
-                for (JsonNode movieNode : resultsNode) {
-                    Movie movie = new Movie();
-                    movie.setImdbId(movieNode.path("imdbID").asText());
-                    movie.setTitle(movieNode.path("Title").asText());
-                    movie.setYear(movieNode.path("Year").asText());
-                    movie.setPosterUrl(movieNode.path("Poster").asText());
-                    movies.add(movie);
+        while (retryCount < maxRetries) {
+            try {
+                Response response = client.newCall(request).execute();
+                if (!response.isSuccessful()) {
+                    throw new IOException("Unexpected response code: " + response);
+                }
+
+                String responseBody = response.body().string();
+                JsonNode rootNode = objectMapper.readTree(responseBody);
+                
+                if (!"True".equals(rootNode.path("Response").asText())) {
+                    return new ArrayList<>();
+                }
+                
+                List<Movie> movies = new ArrayList<>();
+                JsonNode resultsNode = rootNode.path("Search");
+                
+                if (resultsNode.isArray()) {
+                    for (JsonNode movieNode : resultsNode) {
+                        Movie movie = new Movie();
+                        movie.setImdbId(movieNode.path("imdbID").asText());
+                        movie.setTitle(movieNode.path("Title").asText());
+                        movie.setYear(movieNode.path("Year").asText());
+                        movie.setPosterUrl(movieNode.path("Poster").asText());
+                        movies.add(movie);
+                    }
+                }
+                
+                return movies;
+            } catch (IOException e) {
+                lastException = e;
+                retryCount++;
+                if (retryCount < maxRetries) {
+                    System.out.println("Retry attempt " + retryCount + " for search after error: " + e.getMessage());
+                    try {
+                        // Wait before retrying (exponential backoff)
+                        Thread.sleep(1000 * retryCount);
+                    } catch (InterruptedException ie) {
+                        Thread.currentThread().interrupt();
+                        throw new IOException("Interrupted during retry", ie);
+                    }
                 }
             }
-            
-            return movies;
         }
+        
+        // If we get here, all retries failed
+        throw new IOException("Failed search after " + maxRetries + " attempts", lastException);
     }
 
     /**
@@ -93,20 +117,44 @@ public class OmdbApiService {
                 .url(url)
                 .build();
 
-        try (Response response = client.newCall(request).execute()) {
-            if (!response.isSuccessful()) {
-                throw new IOException("Unexpected response code: " + response);
-            }
+        // Implement retry logic
+        int maxRetries = 3;
+        int retryCount = 0;
+        IOException lastException = null;
 
-            String responseBody = response.body().string();
-            JsonNode rootNode = objectMapper.readTree(responseBody);
-            
-            if (!"True".equals(rootNode.path("Response").asText())) {
-                throw new IOException("Error fetching movie details: " + rootNode.path("Error").asText());
+        while (retryCount < maxRetries) {
+            try {
+                Response response = client.newCall(request).execute();
+                if (!response.isSuccessful()) {
+                    throw new IOException("Unexpected response code: " + response);
+                }
+
+                String responseBody = response.body().string();
+                JsonNode rootNode = objectMapper.readTree(responseBody);
+                
+                if (!"True".equals(rootNode.path("Response").asText())) {
+                    throw new IOException("Error fetching movie details: " + rootNode.path("Error").asText());
+                }
+                
+                return objectMapper.treeToValue(rootNode, Movie.class);
+            } catch (IOException e) {
+                lastException = e;
+                retryCount++;
+                if (retryCount < maxRetries) {
+                    System.out.println("Retry attempt " + retryCount + " after error: " + e.getMessage());
+                    try {
+                        // Wait before retrying (exponential backoff)
+                        Thread.sleep(1000 * retryCount);
+                    } catch (InterruptedException ie) {
+                        Thread.currentThread().interrupt();
+                        throw new IOException("Interrupted during retry", ie);
+                    }
+                }
             }
-            
-            return objectMapper.treeToValue(rootNode, Movie.class);
         }
+        
+        // If we get here, all retries failed
+        throw new IOException("Failed after " + maxRetries + " attempts", lastException);
     }
 
     /**
@@ -127,34 +175,58 @@ public class OmdbApiService {
                 .url(url)
                 .build();
 
-        try (Response response = client.newCall(request).execute()) {
-            if (!response.isSuccessful()) {
-                throw new IOException("Unexpected response code: " + response);
-            }
+        // Implement retry logic
+        int maxRetries = 3;
+        int retryCount = 0;
+        IOException lastException = null;
 
-            String responseBody = response.body().string();
-            JsonNode rootNode = objectMapper.readTree(responseBody);
-            
-            if (!"True".equals(rootNode.path("Response").asText())) {
-                return new ArrayList<>();
-            }
-            
-            List<Movie> movies = new ArrayList<>();
-            JsonNode resultsNode = rootNode.path("Search");
-            
-            if (resultsNode.isArray()) {
-                for (JsonNode movieNode : resultsNode) {
-                    Movie movie = new Movie();
-                    movie.setImdbId(movieNode.path("imdbID").asText());
-                    movie.setTitle(movieNode.path("Title").asText());
-                    movie.setYear(movieNode.path("Year").asText());
-                    movie.setPosterUrl(movieNode.path("Poster").asText());
-                    movies.add(movie);
+        while (retryCount < maxRetries) {
+            try {
+                Response response = client.newCall(request).execute();
+                if (!response.isSuccessful()) {
+                    throw new IOException("Unexpected response code: " + response);
+                }
+
+                String responseBody = response.body().string();
+                JsonNode rootNode = objectMapper.readTree(responseBody);
+                
+                if (!"True".equals(rootNode.path("Response").asText())) {
+                    return new ArrayList<>();
+                }
+                
+                List<Movie> movies = new ArrayList<>();
+                JsonNode resultsNode = rootNode.path("Search");
+                
+                if (resultsNode.isArray()) {
+                    for (JsonNode movieNode : resultsNode) {
+                        Movie movie = new Movie();
+                        movie.setImdbId(movieNode.path("imdbID").asText());
+                        movie.setTitle(movieNode.path("Title").asText());
+                        movie.setYear(movieNode.path("Year").asText());
+                        movie.setPosterUrl(movieNode.path("Poster").asText());
+                        movies.add(movie);
+                    }
+                }
+                
+                return movies;
+            } catch (IOException e) {
+                lastException = e;
+                retryCount++;
+                if (retryCount < maxRetries) {
+                    System.out.println("Retry attempt " + retryCount + " for genre search after error: " + e.getMessage());
+                    try {
+                        // Wait before retrying (exponential backoff)
+                        Thread.sleep(1000 * retryCount);
+                    } catch (InterruptedException ie) {
+                        Thread.currentThread().interrupt();
+                        throw new IOException("Interrupted during retry", ie);
+                    }
                 }
             }
-            
-            return movies;
         }
+        
+        // If we get here, all retries failed
+        throw new IOException("Failed genre search after " + maxRetries + " attempts", lastException);
     }
 
     /**

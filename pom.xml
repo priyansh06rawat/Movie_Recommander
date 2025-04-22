@@ -29,6 +29,26 @@
             <artifactId>javafx-fxml</artifactId>
             <version>${javafx.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-graphics</artifactId>
+            <version>${javafx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-base</artifactId>
+            <version>${javafx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-media</artifactId>
+            <version>${javafx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-web</artifactId>
+            <version>${javafx.version}</version>
+        </dependency>
         
         <!-- HTTP Client -->
         <dependency>
@@ -62,6 +82,14 @@
                 <version>${javafx.maven.plugin.version}</version>
                 <configuration>
                     <mainClass>${main.class}</mainClass>
+                    <options>
+                        <option>--add-opens</option>
+                        <option>java.base/java.lang=ALL-UNNAMED</option>
+                        <option>--add-modules</option>
+                        <option>javafx.controls,javafx.fxml,javafx.graphics,javafx.web,javafx.media</option>
+                    </options>
+                    <jlinkImageName>movie-recommender</jlinkImageName>
+                    <launcher>launcher</launcher>
                 </configuration>
             </plugin>
             <plugin>

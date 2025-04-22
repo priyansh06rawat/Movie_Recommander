@@ -1,4 +1,4 @@
-modules = ["java"]
+modules = ["java", "java-latest"]
 
 [nix]
 channel = "stable-24_05"
@@ -19,6 +19,14 @@ args = "JavaFX Movie Recommender"
 [[workflows.workflow.tasks]]
 task = "workflow.run"
 args = "java_application"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Movie Recommender Maven Run"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "API Tester"
 
 [[workflows.workflow]]
 name = "JavaFX Movie Recommender"
@@ -48,6 +56,34 @@ task = "packager.installForAll"
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "java -cp .:target/classes:target/dependency/* com.movierecommender.Main"
+
+[[workflows.workflow]]
+name = "Movie Recommender Maven Run"
+author = "agent"
+
+[workflows.workflow.metadata]
+agentRequireRestartOnSave = false
+
+[[workflows.workflow.tasks]]
+task = "packager.installForAll"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "mvn clean javafx:run"
+
+[[workflows.workflow]]
+name = "API Tester"
+author = "agent"
+
+[workflows.workflow.metadata]
+agentRequireRestartOnSave = false
+
+[[workflows.workflow.tasks]]
+task = "packager.installForAll"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "mvn clean compile exec:java -Dexec.mainClass=\"com.movierecommender.ApiTester\""
 
 [deployment]
 run = ["sh", "-c", "mvn clean javafx:run"]
