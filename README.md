@@ -44,7 +44,7 @@ Clicking on any movie poster opens a detailed view with:
 ### Search Results
 The search functionality allows you to find specific movies:
 
-![Search Results]([https://i.imgur.com/cq3H8Gd.jpg](https://github.com/priyansh06rawat/Movie_Recommander/blob/main/Search.png))
+![Search Results](https://i.imgur.com/cq3H8Gd.jpg](https://github.com/priyansh06rawat/Movie_Recommander/blob/main/Search.png))
 
 ## Technical Information
 
