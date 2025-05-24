@@ -29,7 +29,7 @@ The main screen features multiple rows of movie posters organized by category, s
 - "Trending Now" section with popular movies
 - Genre-based categories (Action, Comedy, Drama, etc.)
 
-![Main Screen](https://i.imgur.com/KlmVJsQ.jpg)
+![Main Screen](https://i.imgur.com/KlmVJsQ.jpg](https://github.com/priyansh06rawat/Movie_Recommander/blob/main/Main_Screen.png))
 
 ### Movie Details
 Clicking on any movie poster opens a detailed view with:
@@ -39,12 +39,12 @@ Clicking on any movie poster opens a detailed view with:
 - Plot summary
 - Similar movie recommendations
 
-![Movie Details](https://i.imgur.com/xZYoXpZ.jpg)
+![Movie Details](https://github.com/priyansh06rawat/Movie_Recommander/blob/main/movie_detail.png)
 
 ### Search Results
 The search functionality allows you to find specific movies:
 
-![Search Results](https://i.imgur.com/cq3H8Gd.jpg)
+![Search Results]([https://i.imgur.com/cq3H8Gd.jpg](https://github.com/priyansh06rawat/Movie_Recommander/blob/main/Search.png))
 
 ## Technical Information
 
