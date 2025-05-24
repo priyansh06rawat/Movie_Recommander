@@ -1,24 +1,30 @@
 package com.movierecommender.controller;
 
+import java.awt.Desktop;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+
 import com.movierecommender.model.Movie;
 import com.movierecommender.service.OmdbApiService;
 import com.movierecommender.service.RecommendationService;
+
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import java.awt.Desktop;
-import java.net.URI;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-
-import java.io.IOException;
-import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
 /**
  * Controller for the movie details view
@@ -168,7 +174,34 @@ public class MovieDetailsController {
         actorsLabel.setText(fullMovie.getActors() != null ? fullMovie.getActors() : "N/A");
         runtimeLabel.setText(fullMovie.getRuntime() != null ? fullMovie.getRuntime() : "N/A");
         ratingLabel.setText(fullMovie.getImdbRating() != null ? fullMovie.getImdbRating() + "/10" : "N/A");
-        plotTextArea.setText(fullMovie.getPlot() != null ? fullMovie.getPlot() : "No plot available.");
+        
+        // Set plot with improved visibility handling
+        String plot = fullMovie.getPlot();
+        if (plot == null || plot.trim().isEmpty()) {
+            plot = "No plot information available for this movie.";
+        }
+        
+        System.out.println("Movie plot: " + plot); // Debug log
+        
+        if (plotTextArea != null) {
+            plotTextArea.setText(plot);
+            plotTextArea.setVisible(true);
+            
+            // Make sure the text area has proper styling
+            plotTextArea.setWrapText(true);
+            plotTextArea.setEditable(false);
+            plotTextArea.getStyleClass().add("plot-text");
+            
+            // Set a minimum height to ensure visibility
+            plotTextArea.setMinHeight(100);
+            
+            // Make sure the container is visible
+            if (plotTextArea.getParent() != null) {
+                plotTextArea.getParent().setVisible(true);
+            }
+        } else {
+            System.err.println("Warning: plotTextArea is null");
+        }
         
         // Configure like button
         likeButton.setOnAction(event -> likeMovie());
@@ -345,14 +378,49 @@ public class MovieDetailsController {
             
             System.out.println("Opening trailer URL: " + youtubeUrl);
             
-            // Open the URL in the default browser
-            if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
-                Desktop.getDesktop().browse(new URI(youtubeUrl));
-            } else {
-                throw new IOException("Desktop browsing not supported on this platform");
-            }
+            // Show a dialog with the URL instead of automatically opening browser
+            // This prevents "Not Responding" issues if the Desktop API isn't available
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Watch Trailer");
+            alert.setHeaderText("Trailer Link for " + title);
+            
+            // Create a TextArea to make the URL selectable/copyable
+            TextArea textArea = new TextArea(youtubeUrl);
+            textArea.setEditable(false);
+            textArea.setWrapText(true);
+            textArea.setPrefHeight(60);
+            textArea.setPrefWidth(400);
+            
+            // Create a VBox to hold our content
+            VBox vbox = new VBox(10);
+            vbox.getChildren().addAll(
+                new Label("Copy this URL and paste it in your browser:"),
+                textArea
+            );
+            
+            // Create a button to attempt to open in browser (as a fallback)
+            Button openButton = new Button("Try to Open in Browser");
+            openButton.setOnAction(event -> {
+                try {
+                    if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+                        Desktop.getDesktop().browse(new URI(youtubeUrl));
+                        alert.close();
+                    } else {
+                        textArea.setText(textArea.getText() + "\n\nCannot open browser automatically on this system.");
+                    }
+                } catch (Exception ex) {
+                    textArea.setText(textArea.getText() + "\n\nError: " + ex.getMessage());
+                }
+            });
+            
+            vbox.getChildren().add(openButton);
+            alert.getDialogPane().setContent(vbox);
+            
+            // Show the dialog
+            alert.showAndWait();
+            
         } catch (Exception e) {
-            String errorMsg = "Error opening trailer: " + e.getMessage();
+            String errorMsg = "Error preparing trailer link: " + e.getMessage();
             System.err.println(errorMsg);
             e.printStackTrace();
             

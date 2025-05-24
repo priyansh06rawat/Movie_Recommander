@@ -25,7 +25,7 @@ public class Main extends Application {
         Parent root = loader.load();
         
         // Set up the primary stage
-        primaryStage.setTitle("Netflix-Style Movie Recommender");
+        primaryStage.setTitle("Priyansh Rahul Movie Recommender");
         Scene scene = new Scene(root, 1280, 720);
         scene.getStylesheets().add(getClass().getResource("/css/netflix-style.css").toExternalForm());
         

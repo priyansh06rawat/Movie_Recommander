@@ -2,6 +2,11 @@
 
 This is a Netflix-style Java desktop application for movie recommendations using the OMDb API. The application provides a user-friendly interface for browsing and searching movies, with personalized recommendations based on your preferences.
 
+## Authors
+
+- Priyansh
+- Rahul Berwal
+
 ## Features
 
 - **Netflix-like UI**: Clean, modern interface similar to streaming platforms

@@ -115,10 +115,20 @@
     -fx-font-size: 14px;
 }
 
-.movie-plot {
+.movie-plot, .plot-text {
+    -fx-background-color: #1f1f1f;
     -fx-text-fill: white;
     -fx-font-size: 14px;
     -fx-wrap-text: true;
+    -fx-border-color: #3e3e3e;
+    -fx-border-width: 1;
+    -fx-border-radius: 3;
+    -fx-padding: 10;
+    -fx-pref-height: 120px;
+    -fx-min-height: 100px;
+    -fx-control-inner-background: #262626;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
 }
 
 .section-title {
@@ -186,15 +196,19 @@
 }
 
 /* Error messages */
-.error-label {
+.error-label, .error-message {
     -fx-text-fill: #E50914;
-    -fx-font-size: 14px;
-    -fx-padding: 5;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-padding: 15;
     -fx-background-color: rgba(229, 9, 20, 0.1);
     -fx-background-radius: 3;
     -fx-border-color: #E50914;
     -fx-border-radius: 3;
     -fx-border-width: 1;
+    -fx-alignment: center;
+    -fx-text-alignment: center;
+    -fx-max-width: 400px;
 }
 
 .empty-results-label {

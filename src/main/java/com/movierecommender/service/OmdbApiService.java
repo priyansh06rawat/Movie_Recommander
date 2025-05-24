@@ -1,19 +1,20 @@
 package com.movierecommender.service;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.movierecommender.model.Movie;
-import com.movierecommender.util.ApiKeyManager;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.movierecommender.model.Movie;
+import com.movierecommender.util.ApiKeyManager;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 /**
  * Service class to interact with the OMDb API
@@ -136,7 +137,19 @@ public class OmdbApiService {
                     throw new IOException("Error fetching movie details: " + rootNode.path("Error").asText());
                 }
                 
-                return objectMapper.treeToValue(rootNode, Movie.class);
+                // Print received plot for debugging
+                String plot = rootNode.path("Plot").asText();
+                System.out.println("Received plot from API: " + (plot != null ? plot.substring(0, Math.min(50, plot.length())) + "..." : "null"));
+                
+                Movie movie = objectMapper.treeToValue(rootNode, Movie.class);
+                
+                // Add additional check for empty plot
+                if (movie.getPlot() == null || movie.getPlot().trim().isEmpty() || "N/A".equals(movie.getPlot())) {
+                    System.out.println("Plot is empty or N/A, setting default plot message");
+                    movie.setPlot("No plot information available for this movie from the API.");
+                }
+                
+                return movie;
             } catch (IOException e) {
                 lastException = e;
                 retryCount++;

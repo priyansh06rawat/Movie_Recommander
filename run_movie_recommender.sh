@@ -1,6 +1,7 @@
 #!/bin/bash
 
 echo "=== Starting MovieMatchMaker Netflix-style Movie Recommender ==="
+echo "Created by Priyansh and Rahul Berwal"
 echo ""
 
 # Check for OMDB API key

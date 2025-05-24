@@ -1,11 +1,11 @@
 com/movierecommender/model/Movie.class
-com/movierecommender/service/RecommendationService.class
 com/movierecommender/Main.class
-com/movierecommender/service/OmdbApiService.class
+com/movierecommender/service/RecommendationService.class
 com/movierecommender/controller/MainController$1.class
+com/movierecommender/service/OmdbApiService.class
 com/movierecommender/controller/MovieDetailsController.class
 com/movierecommender/controller/MainController.class
 com/movierecommender/util/ApiKeyManager.class
 com/movierecommender/FavoritesApiTester.class
-com/movierecommender/ApiTester.class
 com/movierecommender/util/UserPreferences.class
+com/movierecommender/ApiTester.class

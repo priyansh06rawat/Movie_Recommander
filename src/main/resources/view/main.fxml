@@ -16,7 +16,7 @@
             <padding>
                 <Insets top="10" right="15" bottom="10" left="15"/>
             </padding>
-            <Label text="MovieFlix" styleClass="app-title"/>
+            <Label text="PRMovie" styleClass="app-title"/>
             <Region HBox.hgrow="ALWAYS"/>
             
             <!-- Search field -->
@@ -57,7 +57,7 @@
             </padding>
             <Label text="Movie data provided by OMDb API" styleClass="footer-text"/>
             <Region HBox.hgrow="ALWAYS"/>
-            <Label text="© 2023 MovieFlix Recommender" styleClass="footer-text"/>
+            <Label text="© Created by Priyansh, Rahul" styleClass="footer-text"/>
         </HBox>
     </bottom>
 
